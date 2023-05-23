@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
         if (Singleton == null)
         {
             Singleton = this;
+            LoadData();
             DontDestroyOnLoad(gameObject);
         }
         else Destroy(gameObject);

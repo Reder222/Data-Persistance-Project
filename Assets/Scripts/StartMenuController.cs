@@ -13,7 +13,7 @@ public class StartMenuController : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Singleton.LoadData();
+        
         inputField.text = GameManager.Singleton.gameData.playerName;
         bestScoreText.text = $"{GameManager.Singleton.gameData.bestPlayer} : BestScore : {GameManager.Singleton.gameData.bestScore}";
     }
