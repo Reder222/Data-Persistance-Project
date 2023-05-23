@@ -11,21 +11,24 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
 
     public Text ScoreText;
+    public Text BestScoreText;
     public GameObject GameOverText;
-    
+
     private bool m_Started = false;
     private int m_Points;
-    
+
     private bool m_GameOver = false;
 
-    
+
     // Start is called before the first frame update
     void Start()
     {
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
-        
-        int[] pointCountArray = new [] {1,1,2,2,5,5};
+
+        BestScoreUpdate();
+
+        int[] pointCountArray = new[] { 1, 1, 2, 2, 5, 5 };
         for (int i = 0; i < LineCount; ++i)
         {
             for (int x = 0; x < perLine; ++x)
@@ -64,13 +67,36 @@ public class MainManager : MonoBehaviour
 
     void AddPoint(int point)
     {
+        string playerName = GameManager.Singleton.gameData.playerName;
         m_Points += point;
-        ScoreText.text = $"Score : {m_Points}";
+        ScoreText.text = $"{playerName}: Score : {m_Points}";
+    }
+
+    void BestScoreUpdate()
+    {
+        int bestScore = GameManager.Singleton.gameData.bestScore;
+        string bestPlayer = GameManager.Singleton.gameData.bestPlayer;
+        BestScoreText.text = $"Best Score : {bestPlayer} : {bestScore}";
+
     }
 
     public void GameOver()
     {
+        int bestScore = GameManager.Singleton.gameData.bestScore;
+        if (m_Points >= bestScore)
+        {
+            GameManager.Singleton.gameData.bestScore = m_Points;
+            GameManager.Singleton.gameData.bestPlayer = GameManager.Singleton.gameData.playerName;
+            BestScoreUpdate();
+        }
+
+
         m_GameOver = true;
         GameOverText.SetActive(true);
     }
+    public void ReturnToMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
+
 }
